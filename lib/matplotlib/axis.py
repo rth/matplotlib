@@ -2007,6 +2007,9 @@ class XAxis(Axis):
         """
         Return the ticks position (top, bottom, default or unknown)
         """
+        if not len(self.minorTicks) or not len(self.majorTicks):
+            return "unknown"
+
         major = self.majorTicks[0]
         minor = self.minorTicks[0]
         if all(tick.tick1line.get_visible()
@@ -2309,7 +2312,10 @@ class YAxis(Axis):
     def get_text_widths(self, renderer):
         bbox, bbox2 = self.get_ticklabel_extents(renderer)
         # MGDTODO: Need a better way to get the pad
-        padPixels = self.majorTicks[0].get_pad_pixels()
+        if self.majorTicks:
+            padPixels = self.majorTicks[0].get_pad_pixels()
+        else:
+            padPixels = 0.0
 
         left = 0.0
         if bbox.width:
@@ -2388,6 +2394,9 @@ class YAxis(Axis):
         """
         Return the ticks position (left, right, both or unknown)
         """
+        if not len(self.majorTicks) or not len(self.minorTicks):
+            return "unknown"
+
         majt = self.majorTicks[0]
         mT = self.minorTicks[0]
 
